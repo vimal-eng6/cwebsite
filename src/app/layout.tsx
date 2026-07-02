@@ -19,7 +19,7 @@ export default function RootLayout({
       lang="en"
       className="antialiased smooth-scroll"
     >
-      <body className="flex flex-col bg-brand-charcoal text-[#EDEEF0] selection:bg-brand-orange/20 selection:text-brand-orange">
+      <body className="flex flex-col bg-transparent text-slate-800 selection:bg-accent-orange/20 selection:text-accent-orange">
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />

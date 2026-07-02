@@ -14,16 +14,15 @@ import {
   ArrowRight,
   Shield,
   Activity,
-  Layers,
-  Search,
-  MessageSquare
+  Layers
 } from "lucide-react";
-import HighwayCanvas from "@/components/HighwayCanvas";
+import TransformationCanvas from "@/components/TransformationCanvas";
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Initialize Lenis Smooth Scroll
+  // Initialize Lenis Smooth Scroll and track telemetry progress
   useEffect(() => {
     setLoaded(true);
 
@@ -39,11 +38,26 @@ export default function Home() {
     }
     requestAnimationFrame(raf);
 
+    // Dynamic scroll telemetry binding
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0;
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    lenis.on("scroll", (e: any) => {
+      const progress = e.scroll / e.limit;
+      setScrollProgress(Math.min(1, Math.max(0, progress)));
+    });
+
     return () => {
       lenis.destroy();
       (window as any).__lenis = null;
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [loaded]);
 
   const fadeInUpVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -129,19 +143,13 @@ export default function Home() {
   ];
 
   return (
-    <div className={`w-full min-h-screen bg-white transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}>
+    <div className={`w-full min-h-screen bg-transparent transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}>
       
-      {/* 1. HERO SECTION (Dark theme background with auto-playing 3D scene) */}
-      <section className="relative w-full min-h-screen bg-[#0B0D0F] text-white flex items-center justify-center overflow-hidden py-32">
-        {/* Scoped 3D Highway backdrop */}
-        <div className="absolute inset-0 z-0 opacity-40">
-          <React.Suspense fallback={null}>
-            <HighwayCanvas scrollProgress={0} autoPlay={true} />
-          </React.Suspense>
-        </div>
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-[#0B0D0F]/75 z-5" />
+      {/* Dynamic fixed 3D Morphing Sphere Canvas Background */}
+      <TransformationCanvas scrollProgress={scrollProgress} />
 
+      {/* 1. HERO SECTION (Transparent background with central interactive 3D scene floating behind) */}
+      <section className="relative w-full min-h-screen bg-transparent text-white flex items-center justify-center overflow-hidden py-32 z-10">
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center flex flex-col items-center gap-8">
           <motion.div
             initial="hidden"
@@ -190,8 +198,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. PROBLEM SECTION (Light Background - spreadsheet vs dashboard side-by-side) */}
-      <section className="py-24 bg-slate-50 border-b border-slate-200">
+      {/* 2. PROBLEM SECTION (Transparent background to let the morphing sphere backdrop render completely unimpeded) */}
+      <section className="py-24 bg-transparent border-b border-slate-200/50 z-10 relative">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 space-y-16">
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-accent-orange">The Spreadsheeting Trap</span>
@@ -210,7 +218,7 @@ export default function Home() {
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInUpVariants}
-              className="bg-white rounded-lg border border-slate-200 shadow-sm p-6 flex flex-col justify-between"
+              className="bg-white/80 backdrop-blur-md rounded-lg border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between"
             >
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-accent-red bg-accent-red/5 border border-accent-red/10 px-2.5 py-1 rounded mb-4 inline-block">
@@ -220,11 +228,12 @@ export default function Home() {
                 <p className="text-sm text-slate-600 mb-6 leading-relaxed">
                   Formula crashes, unverified inputs, untracked changes, and files locked during concurrent use slow down decisions.
                 </p>
-                <div className="relative rounded border border-slate-200 overflow-hidden bg-slate-100 flex items-center justify-center h-64 shadow-inner">
+                {/* Fixed Image Container: aspect-video and object-contain to render completely without clipping */}
+                <div className="relative rounded border border-slate-200 overflow-hidden bg-slate-50 flex items-center justify-center aspect-video shadow-inner">
                   <img 
                     src="/messy_spreadsheet.png" 
                     alt="Messy spreadsheet data conflict example" 
-                    className="object-cover w-full h-full opacity-90"
+                    className="w-full h-full object-contain"
                   />
                 </div>
               </div>
@@ -236,7 +245,7 @@ export default function Home() {
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeInUpVariants}
-              className="bg-white rounded-lg border border-slate-200 shadow-sm p-6 flex flex-col justify-between"
+              className="bg-white/80 backdrop-blur-md rounded-lg border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between"
             >
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-accent-green bg-accent-green/5 border border-accent-green/10 px-2.5 py-1 rounded mb-4 inline-block">
@@ -246,11 +255,12 @@ export default function Home() {
                 <p className="text-sm text-slate-600 mb-6 leading-relaxed">
                   Every user has a secure, role-based login. All entries are validated, tracked, and synced in real-time.
                 </p>
-                <div className="relative rounded border border-slate-200 overflow-hidden bg-slate-100 flex items-center justify-center h-64 shadow-inner">
+                {/* Fixed Image Container: aspect-video and object-contain to render completely without clipping */}
+                <div className="relative rounded border border-slate-200 overflow-hidden bg-slate-950 flex items-center justify-center aspect-video shadow-inner">
                   <img 
                     src="/clean_dashboard.png" 
                     alt="Clean unified operational dashboard portal example" 
-                    className="object-cover w-full h-full"
+                    className="w-full h-full object-contain"
                   />
                 </div>
               </div>
@@ -259,8 +269,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. SERVICES SECTION (Light Background - 6 cards grid) */}
-      <section id="services" className="py-24 bg-white border-b border-slate-200">
+      {/* 3. SERVICES SECTION (Transparent background) */}
+      <section id="services" className="py-24 bg-transparent border-b border-slate-200/50 z-10 relative">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 space-y-16">
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-accent-orange">What We Do</span>
@@ -282,7 +292,7 @@ export default function Home() {
                   whileInView="visible"
                   viewport={{ once: true, margin: "-50px" }}
                   variants={fadeInUpVariants}
-                  className="bg-slate-50 border border-slate-200/80 rounded-lg p-6 hover:shadow-md transition-all duration-300 flex flex-col justify-between h-[210px] group hover:-translate-y-1"
+                  className="bg-white/80 backdrop-blur-md border border-slate-200 rounded-lg p-6 hover:shadow-md transition-all duration-300 flex flex-col justify-between h-[210px] group hover:-translate-y-1"
                 >
                   <div>
                     <div className="p-2.5 w-fit rounded bg-accent-orange/10 text-accent-orange mb-4 group-hover:bg-accent-orange group-hover:text-white transition-all duration-300">
@@ -298,8 +308,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. HOW IT WORKS SECTION (Light Background - 4 step horizontal process) */}
-      <section id="how-it-works" className="py-24 bg-slate-50 border-b border-slate-200">
+      {/* 4. HOW IT WORKS SECTION (Transparent background) */}
+      <section id="how-it-works" className="py-24 bg-transparent border-b border-slate-200/50 z-10 relative">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 space-y-16">
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-accent-orange">Our Process</span>
@@ -313,7 +323,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
             {/* Desktop progress path line */}
-            <div className="hidden md:block absolute left-8 right-8 top-12 h-[1px] bg-slate-200 z-0" />
+            <div className="hidden md:block absolute left-8 right-8 top-12 h-[1px] bg-slate-200/50 z-0" />
             
             {steps.map((st, idx) => (
               <motion.div
@@ -322,7 +332,7 @@ export default function Home() {
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeInUpVariants}
-                className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm flex flex-col justify-between min-h-[220px] relative z-10"
+                className="bg-white/80 backdrop-blur-md border border-slate-200 rounded-lg p-6 shadow-sm flex flex-col justify-between min-h-[220px] relative z-10"
               >
                 <div>
                   <div className="flex justify-between items-center mb-4">
@@ -339,8 +349,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. WHY CALDIM SECTION (Light Background - 3 differentiators) */}
-      <section className="py-24 bg-white border-b border-slate-200">
+      {/* 5. WHY CALDIM SECTION (Transparent background) */}
+      <section className="py-24 bg-transparent border-b border-slate-200/50 z-10 relative">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 space-y-16">
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-accent-orange">Caldim Advantages</span>
@@ -362,7 +372,7 @@ export default function Home() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   variants={fadeInUpVariants}
-                  className="bg-slate-50 border border-slate-200 rounded-lg p-6 hover:shadow-md transition-shadow duration-300"
+                  className="bg-white/80 backdrop-blur-md border border-slate-200 rounded-lg p-6 hover:shadow-md transition-shadow duration-300"
                 >
                   <div className="p-3 w-fit rounded bg-accent-orange/10 text-accent-orange mb-5">
                     <Icon className="w-6 h-6" />
@@ -376,8 +386,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. TRUST SECTION (Light Background - testimonials & logo placeholders) */}
-      <section className="py-24 bg-slate-50 border-b border-slate-200">
+      {/* 6. TRUST SECTION (Transparent background) */}
+      <section className="py-24 bg-transparent border-b border-slate-200/50 z-10 relative">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 space-y-16">
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-accent-orange">Case Studies & Trust</span>
@@ -388,7 +398,7 @@ export default function Home() {
 
           {/* Testimonials */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="bg-white border border-slate-200 p-6 rounded-lg shadow-sm flex flex-col justify-between">
+            <div className="bg-white/80 backdrop-blur-md border border-slate-200 p-6 rounded-lg shadow-sm flex flex-col justify-between">
               <p className="text-sm text-slate-600 italic leading-relaxed mb-6">
                 "Caldim migrated our steel estimation math in less than 3 weeks. What used to take days of manual email revisions and spreadsheets now resolves automatically."
               </p>
@@ -398,7 +408,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white border border-slate-200 p-6 rounded-lg shadow-sm flex flex-col justify-between">
+            <div className="bg-white/80 backdrop-blur-md border border-slate-200 p-6 rounded-lg shadow-sm flex flex-col justify-between">
               <p className="text-sm text-slate-600 italic leading-relaxed mb-6">
                 "Complete warehouse stock visibility has eliminated our manual checklist leaks, speeded up supplier tracking, and reduced decision latency tenfold."
               </p>
@@ -425,12 +435,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. FINAL CTA BAND (Contrasting Dark Background) */}
-      <section className="py-20 bg-[#14171A] text-white text-center relative overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-5">
-          <div className="blueprint-grid absolute inset-0" />
-        </div>
-        <div className="relative z-10 max-w-4xl mx-auto px-6 space-y-8 flex flex-col items-center">
+      {/* 7. FINAL CTA BAND (Transparent background wrapper) */}
+      <section className="py-20 bg-transparent text-white text-center relative overflow-hidden z-10">
+        {/* Contrast dark overlay inside card style for the CTA band */}
+        <div className="bg-[#14171A]/90 backdrop-blur-md rounded-2xl border border-slate-800 p-12 max-w-5xl mx-auto shadow-xl relative z-10 max-w-4xl space-y-8 flex flex-col items-center">
           <h2 className="text-3xl md:text-5xl font-sans font-extrabold uppercase tracking-tight text-white leading-tight">
             Ready to Systematize Your Operations?
           </h2>
