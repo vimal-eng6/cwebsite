@@ -1,65 +1,160 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useEffect, useState } from "react";
+import { useScroll, motion, AnimatePresence } from "framer-motion";
+import Lenis from "lenis";
+
+// Import custom stops
+import Stop01 from "@/components/stops/Stop01";
+import Stop02 from "@/components/stops/Stop02";
+import Stop03 from "@/components/stops/Stop03";
+import Stop04 from "@/components/stops/Stop04";
+import Stop05 from "@/components/stops/Stop05";
+import Stop06 from "@/components/stops/Stop06";
+import Stop07 from "@/components/stops/Stop07";
+import Stop08 from "@/components/stops/Stop08";
+import Stop09 from "@/components/stops/Stop09";
+import Stop10 from "@/components/stops/Stop10";
+import Stop11 from "@/components/stops/Stop11";
+import Stop12 from "@/components/stops/Stop12";
+
+// Import layout components
+import HighwayCanvas from "@/components/HighwayCanvas";
+import ProgressRail from "@/components/ProgressRail";
+
+/* ─── PRELOADER ─── */
+function Preloader({ onComplete }: { onComplete: () => void }) {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let current = 0;
+    const interval = setInterval(() => {
+      current += Math.random() * 15 + 5;
+      if (current >= 100) {
+        current = 100;
+        clearInterval(interval);
+        setTimeout(onComplete, 500);
+      }
+      setProgress(Math.round(current));
+    }, 70);
+    return () => clearInterval(interval);
+  }, [onComplete]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <motion.div
+      className="fixed inset-0 z-[9999] bg-brand-charcoal flex flex-col items-center justify-center gap-6 scanlines"
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+    >
+      <div className="absolute inset-0 blueprint-grid opacity-15 pointer-events-none" />
+      <span className="font-mono text-xs text-brand-orange uppercase tracking-[0.3em] font-bold">
+        CALDIM TRANSFORMATION PORTAL
+      </span>
+      <div className="w-48 h-[2px] bg-brand-steel rounded-full overflow-hidden">
+        <motion.div
+          className="h-full bg-brand-orange shadow-[0_0_8px_#FF6B00]"
+          animate={{ width: `${progress}%` }}
+          transition={{ ease: "easeOut", duration: 0.15 }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </div>
+      <span className="font-mono text-2xl font-extrabold text-white tabular-nums">
+        {progress}%
+      </span>
+      <span className="font-mono text-[8px] text-brand-muted uppercase">
+        INITIALIZING CORE TELEMETRY...
+      </span>
+    </motion.div>
+  );
+}
+
+/* ─── MAIN COMPONENT ─── */
+export default function Home() {
+  const [loaded, setLoaded] = useState(false);
+  const [currentStopId, setCurrentStopId] = useState("stop-01");
+  const [scrollPercent, setScrollPercent] = useState(0);
+
+  const { scrollYProgress } = useScroll();
+
+  // Initialize Lenis Smooth Scroll
+  useEffect(() => {
+    if (!loaded) return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+    (window as any).__lenis = lenis;
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Track scroll Y progress for camera movement
+    const unsubscribeScroll = scrollYProgress.on("change", (latest) => {
+      setScrollPercent(latest);
+    });
+
+    // Observer to track which Stop section is currently intersecting viewport
+    const sections = document.querySelectorAll("section[id^='stop-']");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setCurrentStopId(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "-20% 0px -20% 0px" }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      lenis.destroy();
+      (window as any).__lenis = null;
+      unsubscribeScroll();
+      observer.disconnect();
+    };
+  }, [loaded, scrollYProgress]);
+
+  return (
+    <>
+      <AnimatePresence>
+        {!loaded && <Preloader onComplete={() => setLoaded(true)} />}
+      </AnimatePresence>
+
+      <div className={`relative min-h-screen ${loaded ? "" : "invisible"}`}>
+        
+        {/* Connective 3D Highway backdrop */}
+        <React.Suspense fallback={
+          <div className="absolute inset-0 bg-brand-charcoal -z-20 flex items-center justify-center font-mono text-xs text-brand-muted">
+            LOADING 3D SCENE...
+          </div>
+        }>
+          <HighwayCanvas scrollProgress={scrollPercent} />
+        </React.Suspense>
+
+        {/* Sticky vertical progress rail navigation */}
+        <ProgressRail currentStopId={currentStopId} />
+
+        {/* 12 Consecutive Journey Stops */}
+        <main className="relative z-10 w-full">
+          <Stop01 />
+          <Stop02 />
+          <Stop03 />
+          <Stop04 />
+          <Stop05 />
+          <Stop06 />
+          <Stop07 />
+          <Stop08 />
+          <Stop09 />
+          <Stop10 />
+          <Stop11 />
+          <Stop12 />
+        </main>
+      </div>
+    </>
   );
 }

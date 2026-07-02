@@ -1,26 +1,180 @@
+/* Import Premium Engineering Fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --text-headline: #F5F6F7;      /* headlines only — near-white */
+  --text-body:     #9A9FA6;      /* body copy only — muted gray */
+  --text-mono:     #C9CDD2;      /* IBM Plex Mono data/telemetry only */
+  --bg-void:       #0B0D0F;      /* darkest background */
+  --bg-panel:      #14171A;      /* card/panel background */
+  --bg-surface:    #1E2124;      /* elevated surface, table rows */
+  --accent-orange: #FF7A1A;      /* ONE signal accent — use sparingly */
+  --accent-red:    #E5484D;      /* error/conflict states only */
+  --accent-green:  #22C55E;      /* success/resolved states only */
+  --border-subtle: rgba(255,255,255,0.07); /* all card borders */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  --color-text-headline: var(--text-headline);
+  --color-text-body: var(--text-body);
+  --color-text-mono: var(--text-mono);
+  --color-bg-void: var(--bg-void);
+  --color-bg-panel: var(--bg-panel);
+  --color-bg-surface: var(--bg-surface);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-red: var(--accent-red);
+  --color-accent-green: var(--accent-green);
+  --color-border-subtle: var(--border-subtle);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Retain aliases for backward compatibility with Tailwind code */
+  --color-brand-orange: var(--accent-orange);
+  --color-brand-amber: var(--accent-orange);
+  --color-brand-charcoal: var(--bg-void);
+  --color-brand-graphite: var(--bg-panel);
+  --color-brand-steel: var(--border-subtle);
+  --color-brand-steel-bright: var(--text-mono);
+  --color-brand-muted: var(--text-body);
+
+  /* Typography variables */
+  --font-sans: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-void);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  
+  /* Apply blueprint cross-hatch grid pattern globally (1C) */
+  background-image:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-attachment: fixed;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-orange);
+}
+
+/* Technical Blueprint Grid Pattern - Cross-Hatch */
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.blueprint-grid-fine {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+
+/* Master Typography Scale Utility Classes */
+.heading-stop {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-headline);
+}
+
+.heading-accent {
+  font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+  font-style: italic;
+  color: var(--accent-orange);
+}
+
+.body-copy {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-body);
+}
+
+.mono-data {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-mono);
+}
+
+.stop-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+  border: 1px solid var(--accent-orange);
+  padding: 3px 10px;
+}
+
+/* Perspective setup for 3D card layout */
+.perspective-container {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Premium Industrial Borders and Shadows */
+.border-industrial {
+  border: 1px solid var(--border-subtle);
+}
+
+.border-industrial-active {
+  border: 1px solid var(--accent-orange);
+}
+
+.shadow-industrial {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Marquee infinite scroll animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 30s linear infinite;
+}
+
+/* scanline screen overlay effect */
+.scanlines::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  background-size: 100% 4px, 6px 100%;
+  z-index: 10;
+  pointer-events: none;
 }
