@@ -104,18 +104,30 @@ function GateCheckpoint({ label, zPos, index }: CheckpointData) {
   );
 }
 
-function ScrollBoundCamera() {
-  useFrame(({ camera }) => {
-    // Read Lenis scroll position dynamically from globally exported instance
-    const scrollY = (window as any).__lenis?.scroll ?? window.scrollY;
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0;
+function ScrollBoundCamera({ autoPlay = false }: { autoPlay?: boolean }) {
+  useFrame(({ camera, clock }) => {
+    if (autoPlay) {
+      const t = clock.getElapsedTime() * 12; // slow constant travel
+      const loopLength = 350;
+      const progress = (t % loopLength) / loopLength;
 
-    // Camera flies down the straight Z-axis highway
-    camera.position.z = 80 - progress * 400;   // starts far back, flies past all gates down to -320
-    camera.position.y = 8 - progress * 3;      // slight descent
-    camera.position.x = Math.sin(progress * Math.PI * 0.5) * 2;  // gentle curve
-    camera.lookAt(0, 2, camera.position.z - 30);
+      // Smooth auto flythrough down the Z-axis
+      camera.position.z = 80 - progress * 350;
+      camera.position.y = 4.5 + Math.sin(progress * Math.PI * 2) * 0.5;
+      camera.position.x = Math.cos(progress * Math.PI * 2) * 0.8;
+      camera.lookAt(0, 1.8, camera.position.z - 30);
+    } else {
+      // Read Lenis scroll position dynamically from globally exported instance
+      const scrollY = (window as any).__lenis?.scroll ?? window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0;
+
+      // Camera flies down the straight Z-axis highway
+      camera.position.z = 80 - progress * 400;   // starts far back, flies past all gates down to -320
+      camera.position.y = 8 - progress * 3;      // slight descent
+      camera.position.x = Math.sin(progress * Math.PI * 0.5) * 2;  // gentle curve
+      camera.lookAt(0, 2, camera.position.z - 30);
+    }
   });
 
   return null;
@@ -128,7 +140,7 @@ function Highway() {
     <>
       <ambientLight intensity={0.15} />
       <pointLight position={[0, 10, 20]} intensity={2} color="#FF7A1A" />
-      <pointLight position={[0, 10, -20]} intensity={1} color="#FFB300" />
+      <pointLight position={[0, 10, -20]} intensity={1} color="#FF7A1A" />
       <fog attach="fog" args={['#0B0D0F', 30, 200]} />
 
       {/* Road surface — long dark plane */}
@@ -153,7 +165,13 @@ function Highway() {
   );
 }
 
-export default function HighwayCanvas({ scrollProgress }: { scrollProgress: number }) {
+export default function HighwayCanvas({ 
+  scrollProgress, 
+  autoPlay = false 
+}: { 
+  scrollProgress: number; 
+  autoPlay?: boolean;
+}) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -184,17 +202,13 @@ export default function HighwayCanvas({ scrollProgress }: { scrollProgress: numb
   }
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
-      {/* Background blueprint overlay */}
-      <div className="blueprint-grid absolute inset-0 opacity-15" />
-      <div className="blueprint-grid-fine absolute inset-0 opacity-10" />
-      
+    <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
       <Canvas
         camera={{ position: [0, 2.5, 0], fov: 60, near: 0.1, far: 500 }}
         style={{ background: "#0B0D0F" }}
         gl={{ antialias: true }}
       >
-        <ScrollBoundCamera />
+        <ScrollBoundCamera autoPlay={autoPlay} />
         <Highway />
       </Canvas>
     </div>

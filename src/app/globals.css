@@ -43,17 +43,10 @@
 }
 
 body {
-  background-color: var(--bg-void);
-  color: var(--text-body);
+  background-color: #FFFFFF;
+  color: #334155;
   font-family: var(--font-sans);
   overflow-x: hidden;
-  
-  /* Apply blueprint cross-hatch grid pattern globally (1C) */
-  background-image:
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
-  background-attachment: fixed;
 }
 
 /* Custom Scrollbar */

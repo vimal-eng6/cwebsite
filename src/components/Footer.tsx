@@ -33,9 +33,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-brand-charcoal border-t border-brand-steel/60 font-sans mt-auto text-brand-steel-bright">
+    <footer className="bg-slate-50 border-t border-slate-200 font-sans mt-auto text-slate-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
+          
           {/* Brand Info */}
           <div className="space-y-4">
             <Link
@@ -43,7 +44,7 @@ export default function Footer() {
               onClick={handleLogoClick}
               className="flex items-center gap-2 group cursor-pointer"
             >
-              <div className="p-1.5 rounded bg-brand-orange/10 text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-all duration-300">
+              <div className="p-1.5 rounded bg-accent-orange/10 text-accent-orange group-hover:bg-accent-orange group-hover:text-white transition-all duration-300">
                 <svg className="w-7 h-7" viewBox="0 0 100 85" fill="currentColor" fillRule="evenodd">
                   {/* Left Side: C */}
                   <path d="M47,15 L10,35 L10,75 L47,75 L47,60 L25,60 L25,48 L47,36 Z" />
@@ -51,31 +52,31 @@ export default function Footer() {
                   <path d="M53,15 L90,35 L90,75 L53,75 Z M68,36 L68,60 L75,60 L80,55 L80,43 L68,36 Z" />
                 </svg>
               </div>
-              <span className="font-mono font-bold text-xl tracking-wider text-white">
-                CALDIM
+              <span className="font-sans font-bold text-xl tracking-tight text-slate-900">
+                Caldim
               </span>
             </Link>
-            <p className="text-xs text-brand-steel-bright leading-relaxed max-w-xs">
-              Helping businesses convert chaotic Excel sheets and disorganized spreadsheets into clean, structured digital databases and interactive dashboards.
+            <p className="text-sm text-slate-500 leading-relaxed max-w-xs">
+              Helping businesses convert chaotic spreadsheets and disorganized processes into clean, structured digital databases and custom workflows.
             </p>
             <div className="flex space-x-3 pt-2">
               <a
                 href="#"
-                className="p-2 rounded bg-brand-graphite border border-brand-steel/50 hover:border-brand-orange hover:text-white text-brand-steel-bright shadow-industrial transition-all duration-200"
+                className="p-2 rounded bg-white border border-slate-200 hover:border-accent-orange hover:text-accent-orange text-slate-500 transition-all duration-200"
                 aria-label="Twitter"
               >
                 <TwitterIcon className="w-4 h-4" />
               </a>
               <a
                 href="#"
-                className="p-2 rounded bg-brand-graphite border border-brand-steel/50 hover:border-brand-orange hover:text-white text-brand-steel-bright shadow-industrial transition-all duration-200"
+                className="p-2 rounded bg-white border border-slate-200 hover:border-accent-orange hover:text-accent-orange text-slate-500 transition-all duration-200"
                 aria-label="LinkedIn"
               >
                 <LinkedinIcon className="w-4 h-4" />
               </a>
               <a
                 href="#"
-                className="p-2 rounded bg-brand-graphite border border-brand-steel/50 hover:border-brand-orange hover:text-white text-brand-steel-bright shadow-industrial transition-all duration-200"
+                className="p-2 rounded bg-white border border-slate-200 hover:border-accent-orange hover:text-accent-orange text-slate-500 transition-all duration-200"
                 aria-label="GitHub"
               >
                 <GithubIcon className="w-4 h-4" />
@@ -85,32 +86,32 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-white mb-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 mb-4">
               Company
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-xs text-brand-steel-bright hover:text-brand-orange transition-colors">
+                <Link href="/" className="text-sm text-slate-500 hover:text-accent-orange transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-xs text-brand-steel-bright hover:text-brand-orange transition-colors">
+                <Link href="/#services" className="text-sm text-slate-500 hover:text-accent-orange transition-colors">
                   Services
                 </Link>
               </li>
               <li>
-                <Link href="/how-it-works" className="text-xs text-brand-steel-bright hover:text-brand-orange transition-colors">
+                <Link href="/#how-it-works" className="text-sm text-slate-500 hover:text-accent-orange transition-colors">
                   How It Works
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-xs text-brand-steel-bright hover:text-brand-orange transition-colors">
+                <Link href="/about" className="text-sm text-slate-500 hover:text-accent-orange transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-xs text-brand-steel-bright hover:text-brand-orange transition-colors">
+                <Link href="/contact" className="text-sm text-slate-500 hover:text-accent-orange transition-colors">
                   Contact
                 </Link>
               </li>
@@ -119,23 +120,23 @@ export default function Footer() {
 
           {/* Services Solutions */}
           <div>
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-white mb-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 mb-4">
               Solutions
             </h3>
             <ul className="space-y-2">
-              <li className="text-xs text-brand-steel-bright">
+              <li className="text-sm text-slate-500">
                 Data Digitization
               </li>
-              <li className="text-xs text-brand-steel-bright">
+              <li className="text-sm text-slate-500">
                 Spreadsheet Cleanup
               </li>
-              <li className="text-xs text-brand-steel-bright">
+              <li className="text-sm text-slate-500">
                 Reporting & Dashboards
               </li>
-              <li className="text-xs text-brand-steel-bright">
+              <li className="text-sm text-slate-500">
                 Workflow Automation
               </li>
-              <li className="text-xs text-brand-steel-bright">
+              <li className="text-sm text-slate-500">
                 Database Migration
               </li>
             </ul>
@@ -143,26 +144,26 @@ export default function Footer() {
 
           {/* Contact Details */}
           <div>
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-white mb-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 mb-4">
               Get In Touch
             </h3>
-            <ul className="space-y-3 text-xs text-brand-steel-bright">
+            <ul className="space-y-3 text-sm text-slate-500">
               <li className="flex items-start gap-2">
-                <MapPin className="w-3.5 h-3.5 text-brand-orange shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-accent-orange shrink-0 mt-0.5" />
                 <span>
                   100 Innovation Way, Suite 400<br />
                   Silicon Valley, CA 94025
                 </span>
               </li>
               <li className="flex items-center gap-2">
-                <Mail className="w-3.5 h-3.5 text-brand-orange shrink-0" />
-                <a href="mailto:info@caldim.com" className="hover:text-brand-orange transition-colors">
+                <Mail className="w-4 h-4 text-accent-orange shrink-0" />
+                <a href="mailto:info@caldim.com" className="hover:text-accent-orange transition-colors">
                   info@caldim.com
                 </a>
               </li>
               <li className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-brand-orange shrink-0" />
-                <a href="tel:+18005550199" className="hover:text-brand-orange transition-colors">
+                <Phone className="w-4 h-4 text-accent-orange shrink-0" />
+                <a href="tel:+18005550199" className="hover:text-accent-orange transition-colors">
                   +1 (800) 555-0199
                 </a>
               </li>
@@ -171,18 +172,18 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-brand-steel/60 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-[10px] font-mono text-brand-muted">
+        <div className="border-t border-slate-200 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-slate-400">
             &copy; {currentYear} Caldim. All rights reserved.
           </p>
-          <div className="flex space-x-6 text-[10px] font-mono text-brand-muted">
-            <a href="#" className="hover:text-brand-orange transition-colors">
+          <div className="flex space-x-6 text-xs text-slate-400">
+            <a href="#" className="hover:text-accent-orange transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-brand-orange transition-colors">
+            <a href="#" className="hover:text-accent-orange transition-colors">
               Terms of Service
             </a>
-            <a href="#" className="hover:text-brand-orange transition-colors">
+            <a href="#" className="hover:text-accent-orange transition-colors">
               Cookie Policy
             </a>
           </div>

@@ -77,10 +77,7 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="w-full max-w-xl bg-bg-panel border border-border-subtle shadow-industrial rounded-sm p-6 sm:p-10 font-sans relative overflow-hidden">
-      {/* Decorative top border highlight */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-accent-orange" />
-
+    <div className="w-full max-w-xl bg-white border border-slate-100 shadow-premium rounded-2xl p-6 sm:p-10 font-sans">
       <AnimatePresence mode="wait">
         {submitStatus === "success" ? (
           <motion.div
@@ -90,21 +87,23 @@ export default function ContactForm() {
             exit={{ opacity: 0, scale: 0.95 }}
             className="flex flex-col items-center text-center py-10"
           >
-            <div className="w-16 h-16 bg-[#22C55E]/10 text-accent-green rounded-full flex items-center justify-center mb-6 border border-[#22C55E]/20">
+            <div className="w-16 h-16 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-6">
               <CheckCircle2 className="w-10 h-10" />
             </div>
-            <h3 className="text-2xl font-bold text-text-headline mb-3">
+            <h3 className="text-2xl font-bold text-brand-navy mb-3">
               Request Submitted!
             </h3>
-            <p className="text-sm text-text-body max-w-sm mb-8 leading-relaxed">
+            <p className="text-sm text-brand-muted max-w-sm mb-8 leading-relaxed">
               Thank you for reaching out. One of our database specialists will review your spreadsheet challenges and contact you within 24 hours.
             </p>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setSubmitStatus("idle")}
-              className="px-6 py-3 rounded-none bg-bg-surface hover:bg-border-subtle text-text-headline font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer"
+              className="px-6 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-brand-navy font-semibold text-sm transition-colors cursor-pointer"
             >
               Send another message
-            </button>
+            </motion.button>
           </motion.div>
         ) : (
           <motion.form
@@ -117,17 +116,17 @@ export default function ContactForm() {
             noValidate
           >
             <div className="space-y-1">
-              <h3 className="text-xl font-bold text-text-headline">
+              <h3 className="text-xl font-bold text-brand-navy">
                 Let's Digitize Your Data
               </h3>
-              <p className="text-xs text-text-body">
+              <p className="text-xs text-brand-muted">
                 Describe your spreadsheet workflow, and we'll draft an action plan.
               </p>
             </div>
 
             {/* Error banner */}
             {submitStatus === "error" && (
-              <div className="p-4 bg-accent-red/10 text-accent-red rounded-sm text-sm flex items-start gap-2 border border-accent-red/25">
+              <div className="p-4 bg-rose-50 text-rose-800 rounded-lg text-sm flex items-start gap-2 border border-rose-100">
                 <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
                 <span>
                   An error occurred while sending your request. Please try again or email us directly at{" "}
@@ -141,7 +140,7 @@ export default function ContactForm() {
 
             {/* Full Name */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="name" className="text-xs font-semibold text-text-headline">
+              <label htmlFor="name" className="text-xs font-semibold text-brand-navy">
                 Full Name
               </label>
               <input
@@ -151,15 +150,15 @@ export default function ContactForm() {
                 value={formData.name}
                 onChange={handleChange}
                 disabled={isSubmitting}
-                className={`w-full px-4 py-3 rounded-sm border text-sm transition-all focus:outline-none bg-bg-void ${
+                className={`w-full px-4 py-3 rounded-lg border text-sm transition-all focus:outline-none focus:ring-2 bg-slate-50/50 ${
                   errors.name
-                    ? "border-accent-red text-accent-red"
-                    : "border-border-subtle text-text-headline focus:border-accent-orange"
+                    ? "border-rose-300 focus:ring-rose-200 focus:border-rose-400 bg-rose-50/10"
+                    : "border-slate-200 focus:ring-blue-100 focus:border-brand-blue"
                 }`}
                 placeholder="Jane Doe"
               />
               {errors.name && (
-                <span className="text-xs text-accent-red font-medium flex items-center gap-1 mt-0.5">
+                <span className="text-xs text-rose-500 font-medium flex items-center gap-1 mt-0.5">
                   <AlertCircle className="w-3.5 h-3.5" />
                   {errors.name}
                 </span>
@@ -168,7 +167,7 @@ export default function ContactForm() {
 
             {/* Email Address */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="email" className="text-xs font-semibold text-text-headline">
+              <label htmlFor="email" className="text-xs font-semibold text-brand-navy">
                 Work Email
               </label>
               <input
@@ -178,15 +177,15 @@ export default function ContactForm() {
                 value={formData.email}
                 onChange={handleChange}
                 disabled={isSubmitting}
-                className={`w-full px-4 py-3 rounded-sm border text-sm transition-all focus:outline-none bg-bg-void ${
+                className={`w-full px-4 py-3 rounded-lg border text-sm transition-all focus:outline-none focus:ring-2 bg-slate-50/50 ${
                   errors.email
-                    ? "border-accent-red text-accent-red"
-                    : "border-border-subtle text-text-headline focus:border-accent-orange"
+                    ? "border-rose-300 focus:ring-rose-200 focus:border-rose-400 bg-rose-50/10"
+                    : "border-slate-200 focus:ring-blue-100 focus:border-brand-blue"
                 }`}
                 placeholder="jane@company.com"
               />
               {errors.email && (
-                <span className="text-xs text-accent-red font-medium flex items-center gap-1 mt-0.5">
+                <span className="text-xs text-rose-500 font-medium flex items-center gap-1 mt-0.5">
                   <AlertCircle className="w-3.5 h-3.5" />
                   {errors.email}
                 </span>
@@ -195,7 +194,7 @@ export default function ContactForm() {
 
             {/* Company Name */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="company" className="text-xs font-semibold text-text-headline">
+              <label htmlFor="company" className="text-xs font-semibold text-brand-navy">
                 Company Name
               </label>
               <input
@@ -205,15 +204,15 @@ export default function ContactForm() {
                 value={formData.company}
                 onChange={handleChange}
                 disabled={isSubmitting}
-                className={`w-full px-4 py-3 rounded-sm border text-sm transition-all focus:outline-none bg-bg-void ${
+                className={`w-full px-4 py-3 rounded-lg border text-sm transition-all focus:outline-none focus:ring-2 bg-slate-50/50 ${
                   errors.company
-                    ? "border-accent-red text-accent-red"
-                    : "border-border-subtle text-text-headline focus:border-accent-orange"
+                    ? "border-rose-300 focus:ring-rose-200 focus:border-rose-400 bg-rose-50/10"
+                    : "border-slate-200 focus:ring-blue-100 focus:border-brand-blue"
                 }`}
                 placeholder="Acme Corp"
               />
               {errors.company && (
-                <span className="text-xs text-accent-red font-medium flex items-center gap-1 mt-0.5">
+                <span className="text-xs text-rose-500 font-medium flex items-center gap-1 mt-0.5">
                   <AlertCircle className="w-3.5 h-3.5" />
                   {errors.company}
                 </span>
@@ -222,7 +221,7 @@ export default function ContactForm() {
 
             {/* Message Details */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="message" className="text-xs font-semibold text-text-headline">
+              <label htmlFor="message" className="text-xs font-semibold text-brand-navy">
                 Describe your spreadsheets
               </label>
               <textarea
@@ -232,27 +231,29 @@ export default function ContactForm() {
                 onChange={handleChange}
                 disabled={isSubmitting}
                 rows={4}
-                className={`w-full px-4 py-3 rounded-sm border text-sm transition-all focus:outline-none bg-bg-void resize-y min-h-[100px] ${
+                className={`w-full px-4 py-3 rounded-lg border text-sm transition-all focus:outline-none focus:ring-2 bg-slate-50/50 resize-y min-h-[100px] ${
                   errors.message
-                    ? "border-accent-red text-accent-red"
-                    : "border-border-subtle text-text-headline focus:border-accent-orange"
+                    ? "border-rose-300 focus:ring-rose-200 focus:border-rose-400 bg-rose-50/10"
+                    : "border-slate-200 focus:ring-blue-100 focus:border-brand-blue"
                 }`}
-                placeholder="Describe your current spreadsheet challenges and manual operational bottlenecks..."
+                placeholder="We have 3 major spreadsheets for tracking client order fulfillment and inventory. They are constantly out of sync, take 5 hours a week of manual copy-pasting, and are prone to double-entry errors..."
               />
               {errors.message && (
-                <span className="text-xs text-accent-red font-medium flex items-center gap-1 mt-0.5">
+                <span className="text-xs text-rose-500 font-medium flex items-center gap-1 mt-0.5">
                   <AlertCircle className="w-3.5 h-3.5" />
                   {errors.message}
                 </span>
               )}
             </div>
 
-            {/* Submit button: sharp corners, solid accent-orange, dark text */}
-            <button
+            {/* Submit button */}
+            <motion.button
+              whileHover={{ scale: isSubmitting ? 1 : 1.01 }}
+              whileTap={{ scale: isSubmitting ? 1 : 0.99 }}
               type="submit"
               disabled={isSubmitting}
-              className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-none text-bg-void font-mono font-bold text-xs uppercase tracking-wider transition-colors shadow-none border-0 cursor-pointer ${
-                isSubmitting ? "bg-accent-orange/70 cursor-not-allowed" : "bg-accent-orange hover:bg-accent-orange/90"
+              className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-lg text-white font-semibold text-sm transition-all shadow-sm cursor-pointer ${
+                isSubmitting ? "bg-blue-450 bg-blue-700/85 cursor-not-allowed" : "bg-brand-blue hover:bg-blue-700"
               }`}
             >
               {isSubmitting ? (
@@ -266,7 +267,7 @@ export default function ContactForm() {
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
-            </button>
+            </motion.button>
           </motion.form>
         )}
       </AnimatePresence>
